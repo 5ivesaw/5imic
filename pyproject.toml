@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=70", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "5imic"
+version = "0.1.0"
+description = "A live, local, clip-built voice instrument for games and calls."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "5ivesaw"}]
+dependencies = [
+  "numpy>=1.26,<3",
+  "SoundCard>=0.4.3,<1",
+  "vosk>=0.3.45,<1",
+  "faster-whisper>=1.1,<2",
+  "prompt_toolkit>=3.0.43,<4",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.9"]
+
+[project.scripts]
+5imic = "fiveimic.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+

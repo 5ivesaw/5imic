@@ -1,0 +1,103 @@
+name: Test, build & publish
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            name: Linux-x64
+            bundle: tar.gz
+          - os: windows-latest
+            name: Windows-x64
+            bundle: zip
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Native dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libpulse0 libasound2 libpulse-dev python3-tk
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]" pyinstaller
+      - name: Verify core
+        run: |
+          python -m pytest -q
+          python -m compileall -q src
+          python -m fiveimic --help
+      - name: Bundle portable application
+        shell: bash
+        run: |
+          pyinstaller --noconfirm --clean --onedir --name 5imic \
+            --collect-all vosk --collect-all soundcard \
+            --collect-all faster_whisper --collect-all ctranslate2 \
+            --collect-all tokenizers \
+            --hidden-import tkinter --hidden-import tkinter.ttk \
+            --icon assets/5imic.ico \
+            run_5imic.py
+      - name: Linux archive
+        if: runner.os == 'Linux'
+        run: tar -czf 5imic-Linux-x64.tar.gz -C dist 5imic
+      - name: Windows archive
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path dist/5imic -DestinationPath 5imic-Windows-x64.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 5imic-${{ matrix.name }}
+          path: 5imic-${{ matrix.name }}.${{ matrix.bundle }}
+          if-no-files-found: error
+
+  publish:
+    name: GitHub Release
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: 5imic-*
+          merge-multiple: true
+      - name: Read version
+        id: version
+        shell: bash
+        run: |
+          echo "tag=v$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')" >> "$GITHUB_OUTPUT"
+      - name: Publish portable packages
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || steps.version.outputs.tag }}
+          name: "5imic — Borrowed Voice Studio ${{ steps.version.outputs.tag }}"
+          body: |
+            Cross-platform preview release. Runs locally and uses spoken audio clips — not voice cloning.
+            - Linux: extract and run ./5imic/5imic; PipeWire/PulseAudio with pactl creates a virtual mic automatically.
+            - Windows: extract and run 5imic.exe; choose an installed VB-CABLE output for virtual microphone transmission.
+            - First run downloads the recognition model. No model weights or other people's voices are bundled.
+            See the README for limitations, supported audio routing, privacy, and troubleshooting.
+          files: |
+            5imic-Linux-x64.tar.gz
+            5imic-Windows-x64.zip
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          make_latest: true
+

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="5imic waveform mark">
+  <defs><linearGradient id="mint" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#ccffe2"/><stop offset="1" stop-color="#5bdcb4"/>
+  </linearGradient></defs>
+  <rect width="128" height="128" rx="33" fill="#10151d"/>
+  <path d="M23 68v-9M39 86V43M55 103V26M71 92V35M87 77V50M103 68v-9"
+    fill="none" stroke="url(#mint)" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="103" cy="24" r="5" fill="#88a5bb"/>
+</svg>

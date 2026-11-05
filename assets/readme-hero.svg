@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="340" viewBox="0 0 1000 340" role="img" aria-label="5imic — the borrowed voice instrument">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#121b27"/><stop offset="1" stop-color="#090e16"/></linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#c2ffdb"/><stop offset="1" stop-color="#42bfab"/></linearGradient>
+  </defs>
+  <rect width="1000" height="340" rx="28" fill="url(#bg)"/>
+  <rect x="22" y="22" width="956" height="296" rx="20" stroke="#354558" fill="none"/>
+  <text x="64" y="75" fill="#9eb5c8" font-family="Arial,sans-serif" font-size="13" letter-spacing="4">LIVE • LOCAL • ORIGINAL VOICES</text>
+  <text x="64" y="157" fill="#f1f8ff" font-family="Arial,sans-serif" font-size="83" font-weight="700" letter-spacing="-5">5IMIC</text>
+  <text x="64" y="201" fill="#a9b8c7" font-family="Arial,sans-serif" font-size="21">The borrowed voice instrument.</text>
+  <rect x="63" y="234" width="331" height="48" rx="24" fill="#233143" stroke="#47605c"/>
+  <circle cx="93" cy="258" r="6" fill="#91ecc0"/>
+  <text x="116" y="264" fill="#e5f3ea" font-family="Arial,sans-serif" font-size="16">Record  →  Remix  →  Speak</text>
+  <g transform="translate(484 67)" fill="none" stroke="url(#line)" stroke-width="12" stroke-linecap="round">
+    <path d="M0 111v-24M28 138V59M56 162V36M84 116V84M112 145V53M140 176V22M168 123V78M196 153V45M224 129V68M252 174V24M280 126V77M308 144V54M336 116V87M364 130V72M392 113V91"/>
+  </g>
+  <g fill="#526579"><circle cx="891" cy="75" r="5"/><circle cx="915" cy="75" r="5"/><circle cx="939" cy="75" r="5"/></g>
+  <text x="900" y="293" text-anchor="end" fill="#84a597" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">NO VOICE CLONING • JUST AUDIO</text>
+</svg>

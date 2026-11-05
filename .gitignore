@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+build/
+dist/
+*.spec
+*.egg-info/
+audio.ulaw
+clips.db*
+settings.json
+controller.json
+models/
+*.zip
+
